@@ -4,9 +4,10 @@ Prover
 Prover of logic theorems in propositional calculus (using Hilbert's axioms). 
 Inspired by the course of mathematical logic.
 
-
 Has two modes of work:
+
 1. Prove statement: run with -p flag
+
 2. Annotate proof: run with -a flag
 
 
@@ -27,12 +28,12 @@ It's possible to specify custom io files with flags:
 
 ### Example of proof:
 
-Input:
+**Input**:
 
 A -> A
 
 
-Output (-p flag):
+**Output** (-p flag):
 
 |-(A->A)
 
@@ -48,11 +49,12 @@ Output (-p flag):
 
 ((A->((A->A)->A))->(A->A))
 
-(A->A)
+(A->A)  
 
 
 
 If we annotate this proof with -a flag:
+
 
 |-(A->A)
 
