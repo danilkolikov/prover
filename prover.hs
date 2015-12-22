@@ -30,12 +30,12 @@ main = do
                                                 printTheorem output proof
                                         Left dict -> let
                                                 decide (name, var) 
-                                                        | Variable _ <- var = name ++ "=И"
-                                                        | Not _ <- var = name ++ "=Л"
-                                                        
-                                                initial = "Высказывание ложно при " ++
+                                                        | Variable _ <- var = name ++ " = T"
+                                                        | Not _ <- var = name ++ " = F"
+
+                                                initial = "Statement is false when " ++
                                                         decide (head dict)                        
-                                                in (print "Statement is not a truth") >> 
+                                                in (print "Statement is false") >> 
                                                         foldl (\o e -> 
                                                                 o >> printF (", " ++ (decide e))) 
                                                         (printF initial) (tail dict) 

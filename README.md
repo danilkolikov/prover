@@ -1,37 +1,55 @@
 Prover
 ------
 
-Prover of logic theorems in propositional calculus (using Hilbert's axioms). 
+Prover of logic theorems in propositional calculus (using Hilbert's system of axioms). 
 Inspired by the course of mathematical logic.
 
 Has two modes of work:
 
 1. Prove statement: run with -p flag
-
 2. Annotate proof: run with -a flag
 
 
 By default reads statements from "input.txt" and writes output to "output.txt"
 It's possible to specify custom io files with flags: 
 
--i "input file" -o "output file"
+* -i "input file"
+* -o "output file"
 
 
 ### Structure of statements:
 
-* Propositional variables - (letters)(digits)
-* And: &
-* Or: |
-* Implies: ->
-* Brackets: ( )
-* Header of a theorem: Assumption1, ..., AssumptionN |- Conclusion
+* Propositional variables: (letters)(digits) : x123, y456
+* Not: !x
+* And: x & y
+* Or: x | y
+* Implies: x -> y
+* Brackets: (expression)
+* Header of a theorem: Assumption1, ..., AssumptionN |- Conclusion  
+
+### List of axioms:
+
+1. A -> B -> A 
+2. (A -> B) -> (A -> B -> C) -> (A -> C)
+3. A -> B -> A & b
+4. A & B -> A
+5. A & B -> B
+6. A -> A | B
+7. B -> A | B
+8. (A -> C) -> (B -> C) -> (A | B -> C)
+9. (A -> B) -> (A -> !B) -> !A
+10. !!A -> A
+
+**Modus Ponens**:
+
+A -> B, A => B
+
 
 ### Example of proof:
 
 **Input**:
 
-A -> A
-
+A -> A  
 
 **Output** (-p flag):
 
@@ -52,9 +70,9 @@ A -> A
 (A->A)  
 
 
+### Example of annotation:
 
-If we annotate this proof with -a flag:
-
+If we annotate this proof with -a flag:  
 
 |-(A->A)
 
@@ -70,4 +88,8 @@ If we annotate this proof with -a flag:
 
 (6) ((A->((A->A)->A))->(A->A)) (Modus Ponens 2 5)
 
-(7) (A->A) (Modus Ponens 4 6)
+(7) (A->A) (Modus Ponens 4 6)  
+
+
+
+ 
