@@ -47,7 +47,7 @@ printAnnotatedTheorem output (Theorem header proof) = let
                         \(e, j) -> case Map.lookup e exprs of
                                 Just i -> [(i, j)]
                                 Nothing -> [] 
-                        = res $ "(Modus Ponens " ++ (show i) ++ " " ++ (show j) ++ ")"
+                        = res $ "(Modus Ponens " ++ (show i) ++ ", " ++ (show j) ++ ")"
                 | otherwise =
                         (out >> hPutStrLn output (beginning ++ "(Not proved)" ++ (show $ MMap.lookup expr impls)), 
                                 n + 1, 
