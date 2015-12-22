@@ -6,8 +6,11 @@ import Logic.Theorem
 import Logic.Proofs
 import Logic.IO
 
+import Data.List(sort)
 import System.IO
 import System.Environment
+
+data Argument = Mode Int | Input String | Output String | Unexpected deriving (Eq, Ord)
 
 main = do
         args <- getArgs
@@ -44,40 +47,61 @@ main = do
                                 print "Mode: create annotation of proof"
                                 printAnnotatedTheorem output theorem
                 
-                -- Read IO arguments
-                readIO [] = ("input.txt", "output.txt")
-                readIO [mode, file] 
-                        | mode == "-i" = (file, "output.txt")
-                        | mode == "-o" = ("input.txt", file)
-
-                readIO [_, file1, _, file2] = (file1, file2) 
+                -- Read arguments from command line
+                readArguments [] = []
+                readArguments (flag : rest) 
+                        | flag == "-p" = (Mode 0) : (readArguments rest)
+                        | flag == "-a" = (Mode 1) : (readArguments rest)
+                        | flag == "-i" = case rest of
+                                [] -> [Unexpected]
+                                (file : rest) -> (Input file) : (readArguments rest)
+                        | flag == "-o" = case rest of
+                                [] -> [Unexpected]
+                                (file : rest) -> (Output file) : (readArguments rest)
+                        | otherwise = Unexpected : (readArguments rest)
                 
-                withFiles :: (String, String) -> (String -> Handle -> IO ()) -> IO ()        
-                withFiles (inputF, outputF) f = do
-                        input <- openFile inputF ReadMode
-                        output <- openFile outputF WriteMode
-                        
+                findMode [] = Nothing
+                findMode ((Mode m) : rest) = Just m
+                findMode (_ : rest) = findMode rest
+                
+                findInput [] = "input.txt"
+                findInput ((Input f) : rest) = f
+                findInput (_ : rest) = findInput rest
+                
+                findOutput [] = "output.txt"
+                findOutput ((Output f) : rest) = f
+                findOutput (_ : rest) = findOutput rest
+  
+                run args = let 
+                                arguments = sort $ readArguments args
+                                mode = findMode arguments
+                                input = findInput arguments
+                                output = findOutput arguments
+                                perform action = withFiles input output action
+                        in case mode of
+                                Just 0 -> perform proveTheorem
+                                Just 1 -> perform annotate
+                                Nothing -> do
+                                        print "Mode isn't specified"
+                                     
+                withFiles inputF outputF f = do
                         print $ "Input: " ++ inputF
                         print $ "Output: " ++ outputF
+                        
+                        input <- openFile inputF ReadMode
+                        output <- openFile outputF WriteMode
                         
                         content <- hGetContents input
                         
                         f content output
                         
-                        
                         hClose input
                         hClose output
                         
-                readArgs :: [String] -> IO ()        
-                
-                readArgs [] = print "Mode isn't specified"
-                readArgs (mode : rest) 
-                        | mode == "-p" = withFiles (readIO rest) proveTheorem
-                        | mode == "-a" = withFiles (readIO rest) annotate
         
-        readArgs args
+        run args
         
-        print "Stopping..."
+        print "Done"
                 
 
 
