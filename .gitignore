@@ -2,11 +2,14 @@
 *
 
 # But
+
 !.gitignore
 !*.hs
+
 !/Logic
 !/Util
 !/Logic/*.hs
 !/Logic/*.hs-boot
 !/Util/*.hs
+
 !*.md

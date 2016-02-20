@@ -7,14 +7,10 @@ Inspired by the course of mathematical logic.
 Has two modes of work:
 
 1. Prove statement: run with -p flag
-2. Annotate proof: run with -a flag
+2. Check and annotate proof: run with -a flag
 
-
-By default reads statements from "input.txt" and writes output to "output.txt"
-It's possible to specify custom io files with flags: 
-
-* -i "input file"
-* -o "output file"
+By default Prover reads statements from standard input and writes to standard output. 
+It's possible to specify custom io files with "<" and ">" operators
 
 
 ### Structure of statements:
